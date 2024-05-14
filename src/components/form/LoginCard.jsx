@@ -12,12 +12,24 @@ export default function LoginCard ()
         register,
         handleSubmit,
         formState: { errors },
+        setError,
         
     } = useForm();
 
     const submitForm = ( formData ) =>
     {
-        console.log(formData)
+        console.log( formData )
+        const user = { email: 'ami@ami.com', password: '12345678' }
+        
+        const found = formData.email === user.email && formData.password === user.password;
+        if ( !found )
+        {
+            setError( "root.random", {
+                message: `user ${formData.email} not found!!`,
+                type: "random"
+            })
+        }
+
     }
 
     return (
@@ -47,6 +59,11 @@ export default function LoginCard ()
                             id="password"
                         />
                     </Field>
+                    {
+                        errors.root && (<div className="text-red-500 py-3">
+                        {errors?.root?.random.message}
+                    </div>)
+                    }
                 </FieldSet>
                 <Field>
                     <button
