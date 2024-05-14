@@ -104,10 +104,21 @@ export default function Registration ()
                     {
                         fields.map( ( field, index ) => (
                             <div
-                                className="flex justify-between items-center w-max"
+                                className="flex flex-col justify-between items-center w-max"
                                 key={field.id}
                             >
-                                <Field label={"users social account"}>
+                                <Field label={ "users social account name" }>
+                                    
+                                    <input
+                                        {...register(`social[${index}].name`)}
+                                        className="p-2 border box-border rounded border-yellow-500"
+                                        type="text"
+                                        id={ `social[${index}].name` }
+                                        name={`social[${index}].name`}
+                                    />
+                                </Field>
+                                <Field label={ "users social account link" }>
+                                    
                                     <input
                                         {...register(`social[${index}].url`)}
                                         className="p-2 border box-border rounded border-yellow-500"
@@ -116,11 +127,16 @@ export default function Registration ()
                                         name={`social[${index}].url`}
                                     />
                                 </Field>
+                                <button
+                                    className='bg-red-500 py-1 px-2 rounded-md my-1 text-sm text-white font-mono'
+                                    onClick={ () => remove( index ) }>
+                                    Remove
+                                </button>
                             </div>
                         ))
                     }
                     <button
-                        className="text-black bg-slate-200 rounded-sm px-2 py-1"
+                        className=" bg-blue-500 text-white w-[200px] rounded-sm px-2 my-2 p-1"
                         onClick={()=> append({name:"", url:""})}
                     >
                         Add social links!
