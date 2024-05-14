@@ -10,7 +10,9 @@ export default function LoginCard ()
     
     const {
         register,
-        handleSubmit
+        handleSubmit,
+        formState: { errors },
+        
     } = useForm();
 
     const submitForm = ( formData ) =>
@@ -22,19 +24,24 @@ export default function LoginCard ()
         <div className="">
             <form onSubmit={handleSubmit(submitForm)} className="flex flex-col gap-3 bg-amber-300 p-2 rounded-sm shadow-md hover:shadow">
                 <FieldSet label="Enter login details">
-                    <Field label={ "Email" }>
+                    <Field label={ "Email" } error={errors.email}>
                         <input
-                            {...register('email')}
-                            className="p-2 border box-border rounded-md border-emerald-300"
+                            {...register('email', {required:"must enter valid email address"})}
+                            className={`p-2 border box-border rounded-md ${errors.email ? "border-red-500" : "border-green-500"}`}
                             name="email"
                             type="email"
                             id="email"
                         />
                     </Field>
-                    <Field label={ "Password" }>
+                    <Field label={ "Password" } error={errors.password}>
                         <input
-                            {...register("password")}
-                            className="p-2 border box-border rounded-md border-emerald-300"
+                            { ...register( "password", {require:"password is required",
+                                minLength: {
+                                    value: 8,
+                                    message: "must 8 or more char!!"
+                                }
+                            })}
+                            className={`p-2 border box-border rounded-md ${errors.password ? "border-red-500" : "border-green-500"}`}
                             name="password"
                             type="password"
                             id="password"
