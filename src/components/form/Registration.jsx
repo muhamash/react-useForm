@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import Field from '../Field';
 import FieldSet from '../FieldSet';
 
@@ -10,9 +11,13 @@ export default function Registration ()
         handleSubmit,
         formState: { errors },
         setError,
-        
+        control,
     } = useForm();
 
+    const { fields, append, remove } = useFieldArray( {
+        name: "socials", control,  
+    } )
+    
     const submitForm = ( formData ) =>
     {
         console.log( formData )
@@ -88,7 +93,6 @@ export default function Registration ()
                             id="age"
                         />
                     </Field>
-
                     
                     {
                         errors.root && ( <div className="text-red-500 py-3">
@@ -96,6 +100,33 @@ export default function Registration ()
                         </div> )
                     }
                 </FieldSet>
+                <FieldSet label={ "Social Links" }>
+                    {
+                        fields.map( ( field, index ) => (
+                            <div
+                                className="flex justify-between items-center w-max"
+                                key={field.id}
+                            >
+                                <Field label={"users social account"}>
+                                    <input
+                                        {...register(`social[${index}].url`)}
+                                        className="p-2 border box-border rounded border-yellow-500"
+                                        type="text"
+                                        id={ `social[${index}].url` }
+                                        name={`social[${index}].url`}
+                                    />
+                                </Field>
+                            </div>
+                        ))
+                    }
+                    <button
+                        className="text-black bg-slate-200 rounded-sm px-2 py-1"
+                        onClick={()=> append({name:"", url:""})}
+                    >
+                        Add social links!
+                    </button>
+                </FieldSet>
+
                 <Field>
                     <button
                         // type="submit"
