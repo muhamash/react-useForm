@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import Field from '../Field';
 import FieldSet from '../FieldSet';
+import NumberInput from './NumberInput';
 
 export default function Registration ()
 {
@@ -21,7 +22,7 @@ export default function Registration ()
     const submitForm = ( formData ) =>
     {
         console.log( formData )
-        const user = { email: 'ami@ami.com', password: '12345678' }
+        // const user = { email: 'ami@ami.com', password: '12345678' }
         
         // const found = formData.email === user.email && formData.password === user.password;
         // if ( !found )
@@ -38,6 +39,18 @@ export default function Registration ()
         <div>
             <form onSubmit={ handleSubmit( submitForm ) } className="flex flex-col gap-3 bg-violet-300 p-2 rounded-sm shadow-md hover:shadow">
                 <FieldSet label="Registration Details">
+                    <Field label={ "Picture" } error={ errors.picture }>
+                        <input
+                            { ...register( "picture", {
+                                required: "user photo is required",
+                                
+                            } ) }
+                            className={ `p-2 border box-border rounded-md ${errors.password ? "border-red-500" : "border-green-500"}` }
+                            name="picture"
+                            type="file"
+                            id="picture"
+                        />
+                    </Field>
                     <Field label={ "Email" } error={ errors.email }>
                         <input
                             { ...register( 'email', { required: "must enter valid email address" } ) }
@@ -50,7 +63,7 @@ export default function Registration ()
                     <Field label={ "Password" } error={ errors.password }>
                         <input
                             { ...register( "password", {
-                                require: "password is required",
+                                required: "password is required",
                                 minLength: {
                                     value: 8,
                                     message: "must 8 or more char!!"
@@ -65,7 +78,7 @@ export default function Registration ()
                     <Field label={ "Name" } error={ errors.Uname }>
                         <input
                             { ...register( "Uname", {
-                                require: "user name is required",
+                                required: "user name is required",
                                 // minLength: {
                                 //     value: 8,
                                 //     message: "must 8 or more char!!"
@@ -79,7 +92,7 @@ export default function Registration ()
                         
                     </Field>
                     <Field label={ "Age" } error={ errors.age }>
-                        <input
+                        {/* <input
                             { ...register( "age", {
                                 require: "age is required",
                                 max: {
@@ -91,6 +104,27 @@ export default function Registration ()
                             name="age"
                             type="number"
                             id="age"
+                        /> */}
+                        <Controller
+                            name="age"
+                            defaultValue={0}
+                            control={ control }
+                            render={ ( { field: { ref, ...field } } ) =>
+                            (
+                                <NumberInput
+                                    id="age"
+                                    className={
+                                        `p-2 border box-border rounded-md ${errors.age ? "border-red-500" : "border-green-500"}`
+                                    }
+                                    {...field}
+                                />
+                            )}
+                            rules={ {
+                                max: {
+                                    value: 100,
+                                    message: "age must be under 100 yrs"
+                                }
+                            }}
                         />
                     </Field>
                     
